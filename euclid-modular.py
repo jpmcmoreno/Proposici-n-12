@@ -248,25 +248,24 @@ def main():
             .rename(columns={'paso': 'Paso', 'descripcion': 'Descripción', 'justificacion': 'Justificación'}) \
             .iloc[::-1]  # Invierte el orden de las filas
 
+        st.markdown("""
+            <style>
+            table {
+                font-size: 20px !important;
+            }
+            </style>
+        """, unsafe_allow_html=True)
 
-        # Generar HTML con estilo
-        html = df_subset.style.hide(axis="index").set_table_styles([
-            {'selector': 'table', 'props': [
-                ('width', 'auto'),  # La tabla se ajusta automáticamente al contenido
-                ('margin', 'auto')  # Centra la tabla dentro de su espacio
-            ]},
-            {'selector': 'th', 'props': [
-                ('font-size', '28px'),
-                ('font-weight', 'bold'),
-                ('text-align', 'center')
-            ]},
-            {'selector': 'td', 'props': [
-                ('font-size', '24px')
-            ]}
-        ]).to_html()
+        # Crear la tabla en texto Markdown manualmente
+        tabla_md = "|Paso | Afirmación | Razón |\n"
+        tabla_md += "|------|------------|---------------|\n"
 
-        # Mostrar tabla con estilo
-        st.markdown(html, unsafe_allow_html=True)
+        for _, row in df_subset.iterrows():
+            tabla_md += f"| {row['Paso']} | {row['Descripción']} | {row['Justificación']} |\n"
+
+        # Mostrar la tabla en Streamlit
+        st.markdown(tabla_md)
+
 
     with col_grafico:
 
